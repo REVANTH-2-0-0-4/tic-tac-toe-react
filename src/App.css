@@ -46,3 +46,7 @@
   border: 1px solid white;
   font-family: 'Times New Roman', Times, serif;
 }
+.game{
+  display: flex;
+  column-gap: 40px;
+}

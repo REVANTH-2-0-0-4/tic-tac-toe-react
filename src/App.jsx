@@ -77,7 +77,8 @@ function App({xisnext,onplay,squares,history}) {
 function Game(){
   const [history,setHistory] = useState([Array(9).fill(null)]);
   const [xisnext,setXisnext] = useState(true);
-  const currentsquares = history[history.length-1];
+  const[currentmove,setCurrentmove] =useState(0);
+  const currentsquares = history[currentmove];
   function handleplay(nextsquares){
     if(nextsquares == history[0]){
       setHistory([Array(9).fill(null)]);
@@ -85,11 +86,32 @@ function Game(){
 
     }
     else{
-      setHistory([...history,nextsquares]);
-      setXisnext(!xisnext);
+      const nextHistory = [...history.slice(0, currentmove + 1), nextsquares];
+      setHistory(nextHistory);
+      setCurrentmove(nextHistory.length - 1);
+          setXisnext(!xisnext);
     }
   
 
+  }
+  const moves = history.map((squares,idx)=>{
+    let description;
+    if( idx >0){
+      description = 'Move  to  step  '+idx;
+    }
+    else{
+      description = " go to game start ";
+    }
+    return(
+      <li key={idx}> 
+        <button onClick={()=>{jumpto(idx)}}>{description}</button>
+      </li>
+    )
+  })
+  function jumpto(nextmoves){
+    setCurrentmove(nextmoves);
+    setXIsNext(nextmoves % 2 === 0);
+     
   }
   return (
     <div className="game">
@@ -98,7 +120,7 @@ function Game(){
    
       </div>
       <div className="game-info">
-        <ol>  </ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
